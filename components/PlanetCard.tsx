@@ -1,24 +1,17 @@
-type Planet = {
-  index: number
-  name: string
-  sector: string
-  health: number
-  maxHealth: number
-  liberation: number
-  faction: string
-  players: number
-  regenPerSecond: number
-}
+import { Planet } from "@/types/helldivers"
+import { getLiberationStatus, estimateTimeToLiberation } from "@/lib/utils"
 
 type Props = {
   planet: Planet
 }
 
 export default function PlanetCard({ planet }: Props) {
+  const status = getLiberationStatus(planet.liberation)
+
   const liberationColor =
-    planet.liberation < 30
+    status === "critical"
       ? "bg-red-500"
-      : planet.liberation < 60
+    : status === "contested"
       ? "bg-orange-400"
       : "bg-green-500"
 
@@ -60,6 +53,11 @@ export default function PlanetCard({ planet }: Props) {
       {/* Joueurs actifs */}
       <p className="text-gray-300 text-sm">
         {planet.players.toLocaleString()} helldivers actifs
+      </p>
+
+      {/* Temps estimé */}
+      <p className="text-gray-500 text-xs">
+        {estimateTimeToLiberation(planet)}
       </p>
 
     </div>

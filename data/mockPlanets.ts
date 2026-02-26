@@ -1,4 +1,6 @@
-export const mockPlanets = [
+import { Planet } from "@/types/helldivers"
+
+export const mockPlanets: Planet[] = [
   {
     index: 1,
     name: "Malevelon Creek",
