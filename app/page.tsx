@@ -4,6 +4,8 @@ import { usePlanets } from "@/hooks/usePlanets"
 import { useWarStatus } from "@/hooks/useWarStatus"
 import PlanetCard from "@/components/PlanetCard"
 import WarStatus from "@/components/WarStatus"
+import RefreshTimer from "@/components/RefreshTimer"
+<RefreshTimer intervalSeconds={3} />
 
 export default function Home() {
   const { planets, error: planetsError, isLoading: planetsLoading } = usePlanets()
@@ -15,6 +17,7 @@ export default function Home() {
         Helldivers 2 — War Dashboard
       </h1>
       <p className="text-gray-400 mb-8">État de la guerre galactique</p>
+      <RefreshTimer intervalSeconds={10} />
 
       {/* Bandeau guerre */}
       {warLoading && <p className="text-gray-400 animate-pulse mb-8">Chargement du statut de guerre...</p>}
