@@ -1,34 +1,63 @@
 import { Planet } from "@/types/helldivers"
-import { getLiberationStatus, estimateTimeToLiberation } from "@/lib/utils"
+import { getLiberationStatus, estimateTimeToLiberation, getDefenseTimeLeft } from "@/lib/utils"
 
 type Props = {
   planet: Planet
+  isDefense?: boolean
 }
 
-export default function PlanetCard({ planet }: Props) {
-  const liberation = ((1 - planet.health / planet.maxHealth) * 100)
+export default function PlanetCard({ planet, isDefense = false }: Props) {
+  const isDefenseMode = isDefense && planet.event !== null
+
+  const currentHealth = isDefenseMode ? planet.event!.health : planet.health
+  const maxHealth = isDefenseMode ? planet.event!.maxHealth : planet.maxHealth
+  const liberation = ((1 - currentHealth / maxHealth) * 100)
+
   const status = getLiberationStatus(liberation)
 
   const liberationColor =
     status === "critical"
       ? "bg-red-500"
-    : status === "contested"
-      ? "bg-orange-400"
-      : "bg-green-500"
+      : status === "contested"
+        ? "bg-orange-400"
+        : "bg-green-500"
 
   const factionColor =
-    planet.currentOwner === "Automaton"
+    planet.currentOwner === "Automatons"
       ? "text-red-400"
       : planet.currentOwner === "Terminids"
-      ? "text-yellow-400"
-      :planet.currentOwner === "Humans"
-      ? "text-blue-400"
-      : "text-purple-400"
-      
+        ? "text-yellow-400"
+        : planet.currentOwner === "Humans"
+          ? "text-blue-400"
+          : "text-purple-400"
+
+  const attackerColor =
+    planet.event?.faction === "Automatons"
+      ? "text-red-400"
+      : planet.event?.faction === "Terminids"
+        ? "text-yellow-400"
+        : "text-purple-400"
+
+  const defenseTimeLeft = isDefenseMode
+    ? getDefenseTimeLeft(planet.event!.endTime)
+    : null
 
   return (
-    <div className="bg-[#1a1a1a] border border-gray-700 rounded-lg p-4 flex flex-col gap-3">
-      
+    <div className={`bg-[#1a1a1a] border rounded-lg p-4 flex flex-col gap-3 ${isDefenseMode ? "border-orange-500" : "border-gray-700"
+      }`}>
+
+      {/* Badge défense */}
+      {isDefenseMode && (
+        <div className="flex items-center gap-2">
+          <span className="bg-orange-500 text-black text-xs font-bold px-2 py-0.5 rounded">
+            DÉFENSE
+          </span>
+          <span className={`text-xs font-semibold ${attackerColor}`}>
+            Attaque : {planet.event!.faction}
+          </span>
+        </div>
+      )}
+
       {/* Nom + Faction */}
       <div className="flex justify-between items-center">
         <h2 className="text-white font-bold text-lg">{planet.name}</h2>
@@ -38,12 +67,12 @@ export default function PlanetCard({ planet }: Props) {
       </div>
 
       {/* Secteur */}
-      <p className="text-gray-400 text-sm">Secteur {planet.sector}</p>
+      <p className="text-gray-400 text-sm">Secteur : {planet.sector}</p>
 
-      {/* Barre de libération */}
+      {/* Barre de progression */}
       <div>
         <div className="flex justify-between text-xs text-gray-400 mb-1">
-          <span>Libération</span>
+          <span>{isDefenseMode ? "Progression ennemie" : "Libération"}</span>
           <span>{liberation.toFixed(1)}%</span>
         </div>
         <div className="w-full bg-gray-700 rounded-full h-2">
@@ -59,9 +88,9 @@ export default function PlanetCard({ planet }: Props) {
         {planet.statistics.playerCount.toLocaleString()} helldivers actifs
       </p>
 
-      {/* Temps estimé */}
-      <p className="text-gray-500 text-xs">
-        {estimateTimeToLiberation(planet)}
+      {/* Temps restant */}
+      <p className="text-gray-500 text-xs italic">
+        {isDefenseMode ? defenseTimeLeft : estimateTimeToLiberation(planet)}
       </p>
 
     </div>

@@ -1,3 +1,13 @@
+export interface PlanetEvent {
+  id: number
+  eventType: number
+  faction: string
+  health: number
+  maxHealth: number
+  startTime: string
+  endTime: string
+}
+
 export interface Planet {
   index: number
   name: string
@@ -6,6 +16,7 @@ export interface Planet {
   maxHealth: number
   currentOwner: string
   regenPerSecond: number
+  event: PlanetEvent | null
   statistics: {
     playerCount: number
   }

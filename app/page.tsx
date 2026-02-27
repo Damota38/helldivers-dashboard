@@ -34,7 +34,7 @@ export default function Home() {
       {campaigns && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {campaigns.map((campaign) => (
-            <PlanetCard key={campaign.id} planet={campaign.planet} />
+            <PlanetCard key={campaign.id} planet={campaign.planet} isDefense={campaign.type === 4} />
           ))}
         </div>
       )}
