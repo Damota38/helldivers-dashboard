@@ -4,8 +4,9 @@ export interface Planet {
   sector: string
   health: number
   maxHealth: number
-  liberation: number
-  faction: string
-  players: number
+  currentOwner: string
   regenPerSecond: number
+  statistics: {
+    playerCount: number
+  }
 }
