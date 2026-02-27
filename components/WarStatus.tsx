@@ -5,7 +5,7 @@ type WarStatusData = {
         missionsLost: number
         deaths: number
         playerCount: number
-        missionsSuccessRate: number
+        missionSuccessRate: number
     }
 }
 
@@ -51,7 +51,7 @@ export default function WarStatus({ data }: Props) {
                 <div className="flex flex-col">
                     <span className="text-gray-400 text-xs uppercase tracking-wide">Taux de succès</span>
                     <span className="text-yellow-400 font-bold text-lg">
-                        {statistics.missionsSuccessRate}%
+                        {statistics.missionSuccessRate}%
                     </span>
                 </div>
 
@@ -61,7 +61,7 @@ export default function WarStatus({ data }: Props) {
             <div className="mt-4 flex gap-2 flex-wrap">
                 {data.factions.map((faction) => {
                     const color =
-                        faction === "Automatons" || faction === "Automaton"
+                        faction === "Automaton" || faction === "Automaton"
                             ? "border-red-500 text-red-400"
                             : faction === "Terminids"
                                 ? "border-yellow-500 text-yellow-400"

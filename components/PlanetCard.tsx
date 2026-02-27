@@ -17,7 +17,7 @@ export default function PlanetCard({ planet }: Props) {
       : "bg-green-500"
 
   const factionColor =
-    planet.currentOwner === "Automatons"
+    planet.currentOwner === "Automaton"
       ? "text-red-400"
       : planet.currentOwner === "Terminids"
       ? "text-yellow-400"
