@@ -10,3 +10,11 @@ export interface Planet {
     playerCount: number
   }
 }
+
+export interface Campaign {
+  id: number
+  planet: Planet
+  type: number
+  count: number
+  faction: string
+}
