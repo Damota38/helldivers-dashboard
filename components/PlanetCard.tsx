@@ -23,7 +23,7 @@ export default function PlanetCard({ planet, isDefense = false }: Props) {
         : "bg-green-500"
 
   const factionColor =
-    planet.currentOwner === "Automatons"
+    planet.currentOwner === "Automaton"
       ? "text-red-400"
       : planet.currentOwner === "Terminids"
         ? "text-yellow-400"
@@ -32,11 +32,22 @@ export default function PlanetCard({ planet, isDefense = false }: Props) {
           : "text-purple-400"
 
   const attackerColor =
-    planet.event?.faction === "Automatons"
+    planet.event?.faction === "Automaton"
       ? "text-red-400"
       : planet.event?.faction === "Terminids"
         ? "text-yellow-400"
         : "text-purple-400"
+
+  const enemyFaction = isDefenseMode ? planet.event?.faction : planet.currentOwner
+
+  const factionBgColor =
+    enemyFaction === "Automaton" || enemyFaction === "Automatons"
+      ? "bg-red-900"
+      : enemyFaction === "Terminids"
+        ? "bg-yellow-900"
+        : enemyFaction === "Illuminate"
+          ? "bg-purple-900"
+          : "bg-gray-700"
 
   const defenseTimeLeft = isDefenseMode
     ? getDefenseTimeLeft(planet.event!.endTime)
@@ -75,9 +86,9 @@ export default function PlanetCard({ planet, isDefense = false }: Props) {
           <span>{isDefenseMode ? "Progression ennemie" : "Libération"}</span>
           <span>{liberation.toFixed(1)}%</span>
         </div>
-        <div className="w-full bg-gray-700 rounded-full h-2">
+        <div className={`w-full rounded-full h-2 ${factionBgColor}`}>
           <div
-            className={`h-2 rounded-full ${liberationColor}`}
+            className={`h-2 rounded-full ${isDefenseMode ? "bg-blue-500" : liberationColor}`}
             style={{ width: `${liberation}%` }}
           />
         </div>
