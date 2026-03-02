@@ -7,6 +7,12 @@ import WarStatus from "@/components/WarStatus"
 
 export default function Home() {
   const { campaigns, error, isLoading } = useCampaigns()
+  const sortedCampaigns = campaigns ? [...campaigns].sort((a, b) => {
+    if (a.type === 4 && b.type !==4) return -1
+    if (a.type !== 4 && b.type === 4) return 1
+    return b.planet.statistics.playerCount - a.planet.statistics.playerCount
+  })
+  :[]
   const { warStatus, isLoading: warLoading } = useWarStatus()
 
   return (
@@ -33,7 +39,7 @@ export default function Home() {
 
       {campaigns && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {campaigns.map((campaign) => (
+          {sortedCampaigns.map((campaign) => (
             <PlanetCard key={campaign.id} planet={campaign.planet} isDefense={campaign.type === 4} />
           ))}
         </div>
