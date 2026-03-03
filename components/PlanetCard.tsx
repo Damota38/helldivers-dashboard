@@ -1,5 +1,5 @@
 import { Planet } from "@/types/helldivers"
-import { getLiberationStatus, estimateTimeToLiberation, getDefenseTimeLeft } from "@/lib/utils"
+import { estimateTimeToLiberation, getDefenseTimeLeft } from "@/lib/utils"
 
 type Props = {
   planet: Planet
@@ -13,14 +13,7 @@ export default function PlanetCard({ planet, isDefense = false }: Props) {
   const maxHealth = isDefenseMode ? planet.event!.maxHealth : planet.maxHealth
   const liberation = ((1 - currentHealth / maxHealth) * 100)
 
-  const status = getLiberationStatus(liberation)
-
-  const liberationColor =
-    status === "critical"
-      ? "bg-red-500"
-      : status === "contested"
-        ? "bg-orange-400"
-        : "bg-green-500"
+  const liberationColor = isDefenseMode ? "bg-blue-500" : "bg-blue-500"
 
   const factionColor =
     planet.currentOwner === "Automaton"
